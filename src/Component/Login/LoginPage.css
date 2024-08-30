@@ -1,0 +1,179 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.loginSignup{
+    width: 100%;
+    height: 91vh;
+    padding-top:50px ;
+    display: flex;
+    justify-content: center;
+}
+
+
+.login{
+    width: 600px;
+    height: 450px;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.login h1{
+    font-size: 40px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.email_container input,
+.password_container input
+{
+    width: 100%;
+    margin-bottom: 30px;
+    padding: 10px;
+    font-size: 15px;
+    outline: none;
+    font-weight: 700;
+}
+
+
+
+.login-btn{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.login-btn button{
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(#D641EE, #695AEE);
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.check{
+    display: flex;
+    gap: 5px;
+}
+
+.Forget_Remember{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.signup_form input {
+    width: 100%;
+    margin-bottom: 30px;
+    padding: 10px;
+    font-size: 15px;
+    outline: none;
+    font-weight: 700;
+    border-radius:10px ;
+    border: 1px solid #E8ECF4;
+}
+
+.signup{
+    width: 350px;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.signup h3{
+    font-size: 40px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.resetPassword{
+    text-decoration: none;
+    color: blue;
+    font-size: 15px;
+    text-align: center;
+}
+
+.input-field {
+    width: 100%;
+    
+    text-align: center;
+}
+.icon {
+    padding: 10px;
+    min-width: 40px;
+}
+
+.input-icons {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.input-icons img{
+    position: absolute;
+}
+
+.link_login a{
+    text-decoration: none;
+}
+
+.back-to-login-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center;    
+          
+  }
+  
+  .back-to-login-link { 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;   
+    color: #000;             
+  }
+  
+  .back-to-login-img {
+    width: 30px;
+  }
+  
+
+  .submit_btn button{
+    width: 280px;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.reset h2{
+    margin-bottom:10px ;
+}
+
+.reset{
+    width: 500px;
+    height: 450px;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;    
+}
+
+.reset_icon{
+    display: flex;
+    justify-content: center;
+}
+
+.reset h4,
+.reset h2{
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+
