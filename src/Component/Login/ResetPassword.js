@@ -10,7 +10,7 @@ const ForgotPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8080/api/forgot-password", {
+      const response = await axios.post("https://med-scribe-backend.onrender.com/api/forgot-password", {
         email
       });
 

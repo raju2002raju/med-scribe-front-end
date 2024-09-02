@@ -11,7 +11,7 @@ function GetDataBackEnd({ ContactIdClients, ContactId }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const apiUrl = 'http://localhost:8080/asr/transcriptions';
+                const apiUrl = 'https://med-scribe-backend.onrender.com/asr/transcriptions';
                 const options = {
                     method: 'GET',
                     headers: {
@@ -48,7 +48,7 @@ function GetDataBackEnd({ ContactIdClients, ContactId }) {
         setData(newData);
 
         try {
-            const response = await fetch(`http://localhost:8080/api/deleteRow/${id}`, {
+            const response = await fetch(`https://med-scribe-backend.onrender.com/api/deleteRow/${id}`, {
                 method: 'DELETE',
             });
 
@@ -141,7 +141,7 @@ function GetDataBackEnd({ ContactIdClients, ContactId }) {
                         <span>AUDIO PLAY</span>
                         <span>
                             <audio controls>
-                                <source src={`http://localhost:8080/files/${item.filePath}`} type="audio/wav" />
+                                <source src={`https://med-scribe-backend.onrender.com/files/${item.filePath}`} type="audio/wav" />
                                 Your browser does not support the audio element.
                             </audio>
                         </span>

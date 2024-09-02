@@ -11,21 +11,21 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false); // State for checkbox
+  const [rememberMe, setRememberMe] = useState(false); 
 
   async function submit(e) {
     e.preventDefault();
-    console.log('Submit function called'); // Debugging log
+    console.log('Submit function called'); 
 
-    // Check if the checkbox is checked
-    console.log('Remember Me:', rememberMe); // Debugging log
+ 
+    console.log('Remember Me:', rememberMe); 
     if (!rememberMe) {
       alert("Please tick the 'Remember Me' checkbox to proceed.");
       return;
     }
 
     try {
-      const response = await axios.post("http://localhost:8080/auth/login", {  
+      const response = await axios.post("https://med-scribe-backend.onrender.com/auth/login", {  
           email,
           password
       });

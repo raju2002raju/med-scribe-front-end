@@ -19,13 +19,12 @@ function DashboardAi() {
         // Fetch user data when component mounts
         const fetchUserData = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/auth/user', {
+                const response = await axios.get('https://med-scribe-backend.onrender.com/auth/user', {
                     withCredentials: true
                 });
                 setUserData(response.data);
             } catch (error) {
                 console.error("Error fetching user data:", error);
-
             }
         };
 
@@ -35,24 +34,23 @@ function DashboardAi() {
     const handleOpenChat = () => {
         setIsChatOpen(!isChatOpen);
     };
+
     const handleSendMessage = async () => {
-        if (inputMessage.trim() === '') return; // Avoid sending empty messages
-    
-        // Display the user's message in the chat
+        if (inputMessage.trim() === '') return; 
+
         setChatMessages(prevMessages => [
             ...prevMessages, 
             { text: inputMessage, isUser: true }
         ]);
-    
+
         let formData = new FormData();
         formData.append('text', inputMessage);
-    
+
         try {
-            const response = await axios.post('http://localhost:8080/auth/chat-process', formData, {
+            const response = await axios.post('https://med-scribe-backend.onrender.com/auth/chat-process', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
-    
-            // Display the response from the backend
+
             setChatMessages(prevMessages => [
                 ...prevMessages, 
                 { text: response.data.message, isUser: false }
@@ -65,10 +63,9 @@ function DashboardAi() {
                 { text: "Error: Unable to send message", isUser: false }
             ]);
         }
-    
+
         setInputMessage('');
     };
-    
 
     const startRecording = async () => {
         let constraints = { audio: true, video: false };
@@ -102,7 +99,7 @@ function DashboardAi() {
         let data = new FormData();
         data.append('wavfile', blob, "recording.wav");
         const config = { headers: { 'content-type': 'multipart/form-data' } };
-        axios.post('http://localhost:8080/asr', data, config)
+        axios.post('https://med-scribe-backend.onrender.com/asr', data, config)
             .then(response => {
                 playAudio(response.data.mp3Url); 
                 setIsLoading(false);
@@ -127,20 +124,19 @@ function DashboardAi() {
         }
     };
 
-    const handlepopupClose = () => {
+    const handlePopupClose = () => {
         setIsChatOpen(false);
     };
-
 
     return (
         <div className="dashboard">
             <Navbar1 />
             <main>
-            <header className='Ai-header'>
+                <header className='Ai-header'>
                     {userData && (
                         <>
                             <img 
-                                src={userData.profileImage ? `http://localhost:8080${userData.profileImage}` : "./Images/Ellipse 232.png"} 
+                                src={userData.profileImage ? `https://med-scribe-backend.onrender.com${userData.profileImage}` : "./Images/Ellipse 232.png"} 
                                 alt="Profile" 
                                 className="profile-pic" 
                             />
@@ -162,8 +158,8 @@ function DashboardAi() {
                     </div>
                     {isChatOpen && (
                         <div className="chat-interface">
-                           <div>
-                               <img src='../Images/cross.png' style={{width:'30px'}} onClick={handlepopupClose} alt="Close"/>
+                            <div>
+                                <img src='../Images/cross.png' style={{width:'30px'}} onClick={handlePopupClose} alt="Close"/>
                             </div>
                             <div className="chat-messages">
                                 {chatMessages.map((message, index) => (
@@ -187,10 +183,9 @@ function DashboardAi() {
                         <img src='./Images/Layer_1.png' alt="Audio Blob"/>
                     </div>
                 </div>
-               <div className='desktop-audioblob'>
-    <img src='./Images/audioblob.png' alt="Audio Blob" className="blob-animation"/>
-</div>
-
+                <div className='desktop-audioblob'>
+                    <img src='./Images/audioblob.png' alt="Audio Blob" className="blob-animation"/>
+                </div>
             </main>
         </div>
     );

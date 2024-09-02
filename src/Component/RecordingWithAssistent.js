@@ -72,7 +72,7 @@ function RecordingWithAssistent({ contactId, onRecordingStop }) {
         const config = {
             headers: { 'content-type': 'multipart/form-data' }
         };
-        axios.post('http://localhost:8080/asr', data, config)
+        axios.post('https://med-scribe-backend.onrender.com/asr', data, config)
             .then(response => {
                 console.log("File uploaded successfully:", response.data);
                 console.log("Contact ID sent to backend:", contactId);

@@ -146,7 +146,7 @@ const ClientsSendData = () => {
         visitedClients: filteredVisitedClients,
       };
 
-      const response = await fetch('http://localhost:8080/clientData/clientData', {
+      const response = await fetch('https://med-scribe-backend.onrender.com/clientData/clientData', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -71,7 +71,7 @@ function TalkWithAssistant() {
         let formData = new FormData();
         formData.append('wavfile', blob, "recording.wav");
 
-        axios.post('http://localhost:8080/asr', formData, {
+        axios.post('https://med-scribe-backend.onrender.com/asr', formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
         })
         .then(response => {

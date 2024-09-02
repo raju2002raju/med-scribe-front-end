@@ -18,7 +18,7 @@ const CreateNewPassword = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:8080/api/reset-password', {
+      const response = await fetch('https://med-scribe-backend.onrender.com/api/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp, newPassword })

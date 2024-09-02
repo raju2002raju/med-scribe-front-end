@@ -66,7 +66,7 @@ function Signup() {
         }
 
         try {
-            const response = await axios.post("http://localhost:8080/auth/signup", formData, {
+            const response = await axios.post("https://med-scribe-backend.onrender.com/auth/signup", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
