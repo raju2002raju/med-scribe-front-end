@@ -11,26 +11,36 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false); // State for checkbox
 
   async function submit(e) {
     e.preventDefault();
+    console.log('Submit function called'); // Debugging log
+
+    // Check if the checkbox is checked
+    console.log('Remember Me:', rememberMe); // Debugging log
+    if (!rememberMe) {
+      alert("Please tick the 'Remember Me' checkbox to proceed.");
+      return;
+    }
+
     try {
-      const response = await axios.post("https://med-scribe-backend.onrender.com/auth/login", {  
+      const response = await axios.post("http://localhost:8080/auth/login", {  
           email,
           password
       });
-  
+
       console.log('Response from server:', response);
-  
+
       if (response.status === 200) { 
-          if (response.data.status === "exist") {
-              console.log('Navigating to dashboard');
-              navigate("/dashboard", { state: { user: response.data.user } });
-          } else if (response.data.status === "notexist") {
-              alert("User not found or incorrect password");
-          }
+        if (response.data.status === "exist") {
+          console.log('Navigating to dashboard');
+          navigate("/dashboard", { state: { user: response.data.user } });
+        } else if (response.data.status === "notexist") {
+          alert("User not found or incorrect password");
+        }
       } else {
-          alert("Failed to login. Please try again.");
+        alert("Password incorrect. Please try again.");
       }
     } catch (error) {
       alert("Failed to login. Please try again.");
@@ -79,7 +89,14 @@ const Login = () => {
             </div>
             <div className='Forget_Remember'>
               <div className='check'>
-                <input type='checkbox' />
+                <input 
+                  type='checkbox' 
+                  checked={rememberMe} 
+                  onChange={(e) => {
+                    console.log('Checkbox clicked:', e.target.checked); // Debugging log
+                    setRememberMe(e.target.checked); 
+                  }} 
+                />
                 <p style={{fontSize:'15px'}}>Remember Me</p>
               </div>
               <div>
@@ -87,7 +104,7 @@ const Login = () => {
               </div>
             </div>
             <div className='login-btn'>
-              <button type="submit">Login</button>
+              <button type="submit" disabled={!rememberMe}>Login</button>
             </div>
             <div>
               <p>Don't have an account? <Link style={{textDecoration:'none'}} to='/signup'><span>Register Now</span></Link></p>

@@ -37,7 +37,7 @@ const Setting = () => {
       prompt: prompt,
     };
 
-    fetch('https://med-scribe-backend.onrender.com/config/api/update-prompt', {
+    fetch('http://localhost:8080/config/api/update-prompt', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const Setting = () => {
       openAiApiKey: openAiApiKey,
     };
 
-    fetch('https://med-scribe-backend.onrender.com/config/api/update-open-ai-api-key', {
+    fetch('http://localhost:8080/config/api/update-open-ai-api-key', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ const Setting = () => {
     }
   
     try {
-      const response = await axios.post('https://med-scribe-backend.onrender.com/profile/update', formData, {
+      const response = await axios.post('http://localhost:8080/profile/update', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -128,7 +128,7 @@ const Setting = () => {
       newPassword,
     };
   
-    fetch('https://med-scribe-backend.onrender.com/api/reset-password-setting', {
+    fetch('http://localhost:8080/api/reset-password-setting', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -1,27 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const OTPVerification = () => {
   const [otp, setOtp] = useState(new Array(6).fill(""));
-  const [userEmail, setUserEmail] = useState("royr55601@gmail.com"); 
+  const [userEmail, setUserEmail] = useState(""); 
   const [isResending, setIsResending] = useState(false);
   const [resendMessage, setResendMessage] = useState(""); 
-  const [timer, setTimer] = useState(30); // Timer state
+  const [timer, setTimer] = useState(30); 
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    let interval;
-    if (isResending && timer > 0) {
-      interval = setInterval(() => {
-        setTimer((prevTimer) => prevTimer - 1);
-      }, 1000);
-    } else if (timer === 0) {
-      setIsResending(false);
-      setTimer(30); // Reset the timer for the next use
+    // Retrieve email from the state passed during navigation
+    const emailFromState = location.state?.email;
+    if (emailFromState) {
+      setUserEmail(emailFromState);
     }
-
-    return () => clearInterval(interval);
-  }, [isResending, timer]);
+  }, [location.state]);
 
   const handleChange = (element, index) => {
     if (isNaN(element.value)) return;
@@ -38,7 +33,7 @@ const OTPVerification = () => {
     const otpString = otp.join('');
 
     try {
-      const response = await fetch('https://med-scribe-backend.onrender.com/api/verify-otp', {
+      const response = await fetch('http://localhost:8080/api/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: userEmail, otp: otpString })
@@ -46,7 +41,7 @@ const OTPVerification = () => {
 
       const result = await response.json();
       if (result.success) {
-        navigate('/create-new-password'); // Redirect on success
+        navigate('/create-new-password'); 
       } else {
         alert('Your OTP is invalid or expired');
       }
@@ -60,7 +55,7 @@ const OTPVerification = () => {
     setResendMessage(""); 
 
     try {
-      const response = await fetch('https://med-scribe-backend.onrender.com/api/resend-otp', {
+      const response = await fetch('http://localhost:8080/api/resend-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: userEmail })
@@ -83,21 +78,19 @@ const OTPVerification = () => {
       <img src='./Images/Vector 3.png' alt="vector" style={{ width: '100%' }} className='vector-img' />
       <div className="otp-container">
         <h2>OTP Verification</h2>
-        <p>Enter the verification code we just sent on your email address.</p>
+        <p>Enter the verification code we just sent to your email address.</p>
         <form onSubmit={handleSubmit}>
           <div className="otp-inputs">
-            {otp.map((data, index) => {
-              return (
-                <input
-                  type="text"
-                  maxLength="1"
-                  key={index}
-                  value={data}
-                  onChange={(e) => handleChange(e.target, index)}
-                  onFocus={(e) => e.target.select()}
-                />
-              );
-            })}
+            {otp.map((data, index) => (
+              <input
+                type="text"
+                maxLength="1"
+                key={index}
+                value={data}
+                onChange={(e) => handleChange(e.target, index)}
+                onFocus={(e) => e.target.select()}
+              />
+            ))}
           </div>
           <button className="btn verify-btn" type="submit">
             Verify
@@ -115,7 +108,7 @@ const OTPVerification = () => {
           {resendMessage && <p className="resend-message">{resendMessage}</p>}
         </form>
       </div>
-    </div>
+    </div>  
   );
 };
 

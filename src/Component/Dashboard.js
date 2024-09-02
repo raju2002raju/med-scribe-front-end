@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import DashboardAi from './DashboardAi';
-import Calendar from './Calendar';
 import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
@@ -10,9 +9,11 @@ function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('ghlApiKey');
-    if (!token) {
-      navigate('/login'); 
+    const ghlApiKey = localStorage.getItem('ghlApiKey');
+
+    if (!ghlApiKey) {
+      alert('Please provide GHL Key to proceed.');
+      navigate('/setting'); 
       return;
     }
 
@@ -23,7 +24,6 @@ function Dashboard() {
     const startDateTimestamp = Math.floor(currentDate.getTime());
     const endDateTimestamp = Math.floor(endDate.getTime());
 
-    const ghlApiKey = localStorage.getItem('ghlApiKey');
     const apiUrl = `https://rest.gohighlevel.com/v1/appointments/?startDate=${startDateTimestamp}&endDate=${endDateTimestamp}&userId=YtnIKZvb8yvCjzfZZS59&calendarId=FuhywKPvwBZdKT6dYUbT&teamId=YtnIKZvb8yvCjzfZZS59&includeAll=true`;
 
     const options = {
@@ -31,7 +31,6 @@ function Dashboard() {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${ghlApiKey}`,
-        'Authorization': `Bearer ${token}`
       }
     };
 

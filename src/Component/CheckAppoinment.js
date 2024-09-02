@@ -42,7 +42,7 @@ function CheckAppoinment() {
     
     const sendDataToBackend = async (data) => {
         try {
-            const response = await fetch('https://med-scribe-backend.onrender.com/clientData/sendData', {
+            const response = await fetch('http://localhost:8080/clientData/sendData', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -58,21 +58,21 @@ function CheckAppoinment() {
         }
     };
     
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error.message}</div>;
-    return (
-        <div>
-            <table>
-                    <tbody>
-                    {data.map(team => (
-                        <tr key={team.id}>
-                            <td>{JSON.stringify(data)}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    );
+    // if (loading) return <div>Loading...</div>;
+    // if (error) return <div>Error: {error.message}</div>;
+    // return (
+    //     <div>
+    //         <table>
+    //                 <tbody>
+    //                 {data.map(team => (
+    //                     <tr key={team.id}>
+    //                         <td>{JSON.stringify(data)}</td>
+    //                     </tr>
+    //                 ))}
+    //             </tbody>
+    //         </table>
+    //     </div>
+    // );
 }
 
 export default CheckAppoinment;

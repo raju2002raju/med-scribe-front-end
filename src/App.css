@@ -17,7 +17,7 @@
 .home_container{
   background: linear-gradient(#3736DF, #8D41EE, #D641EE);
   width: 100%;
-  min-width: 1540px;
+  min-width: 100%;
   height: 100%;
   min-height: 100vh;
   display: flex;
@@ -122,16 +122,7 @@ hr{
     width: 100%;
   }
 
-  .password_container img {
-    position: absolute;
-    left: 30px;
-    top: 72%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    z-index: 1;
-  }
+ 
 
  
 
@@ -226,6 +217,7 @@ hr{
 
   .onboarding-dots .active {
     background-color: #8D41EE;
+    
   }
 
   .general-data{
@@ -403,10 +395,10 @@ nav ul li img {
 .active {
   font-weight: bold;
   background: #fff;
-  width: 135px;
   padding: 5px ;
   height: 35px;
   border-radius:10px ;
+  color: #8D41EE;
 }
 
 .settings {
@@ -733,6 +725,7 @@ nav button.active {
   background-color: #ffffff9b;
   border-radius: 10px;
   opacity: 1;
+  
 }
 
 
@@ -846,6 +839,7 @@ button{
   border-radius:50% ;
   display: flex;
   justify-content: center;
+
 }
 
 
@@ -1214,25 +1208,11 @@ button{
     justify-content: space-between;
   }
 
-  .password_container img {
-    position: absolute;
-    left: 32%;
-    top: 67%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    z-index: 1;
-  }
-
   .search-div-button{
     margin-top: 50px;
   }
 
 }
-
-
-
 
 .otp-container {
   max-width: 400px;
@@ -1373,7 +1353,7 @@ button{
 .nav-link.active,
 .sidebar.active {
     background-color: rgba(255, 255, 255, 0.314);
-    color: #000;
+    color: #8D41EE;
     width: 100%;
     height: 30%;
     display: flex;
@@ -1384,20 +1364,23 @@ button{
 
 .nav-link.active,
 .mobile-navbar.active{
-  background-color: #000;
+  color: #8D41EE;
 }
 
 ul li a, 
 a{
   text-decoration: none;
-  color: #8D41EE;
   display: flex;
   align-items: center;
-  
 }
 
 .chat-messages{
   overflow-wrap: anywhere;
+}
+
+.hourglass_container{
+  display: flex;
+  justify-content: center;
 }
 
 

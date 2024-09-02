@@ -11,7 +11,7 @@ const SavedTranscribeText = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const apiUrl = 'https://med-scribe-backend.onrender.com/save-transcript';
+                const apiUrl = 'http://localhost:8080/save-transcript';
                 const options = {
                     method: 'GET',
                     headers: {

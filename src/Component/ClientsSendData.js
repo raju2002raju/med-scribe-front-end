@@ -146,7 +146,7 @@ const ClientsSendData = () => {
         visitedClients: filteredVisitedClients,
       };
 
-      const response = await fetch('https://med-scribe-backend.onrender.com/clientData/clientData', {
+      const response = await fetch('http://localhost:8080/clientData/clientData', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -165,19 +165,19 @@ const ClientsSendData = () => {
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
+  // if (error) {
+  //   return <div>Error: {error.message}</div>;
+  // }
 
-  return (
-    <div>
-      {/* <p>Data fetched and sent to the backend successfully.</p> */}
-    </div>
-  );
+  // return (
+  //   <div>
+  //     <p>Data fetched and sent to the backend successfully.</p>
+  //   </div>
+  // );
 };
 
 export default ClientsSendData;

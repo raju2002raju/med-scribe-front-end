@@ -19,7 +19,7 @@ function DashboardAi() {
         // Fetch user data when component mounts
         const fetchUserData = async () => {
             try {
-                const response = await axios.get('https://med-scribe-backend.onrender.com/auth/user', {
+                const response = await axios.get('http://localhost:8080/auth/user', {
                     withCredentials: true
                 });
                 setUserData(response.data);
@@ -48,7 +48,7 @@ function DashboardAi() {
         formData.append('text', inputMessage);
     
         try {
-            const response = await axios.post('https://med-scribe-backend.onrender.com/auth/chat-process', formData, {
+            const response = await axios.post('http://localhost:8080/auth/chat-process', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
     
@@ -66,7 +66,7 @@ function DashboardAi() {
             ]);
         }
     
-        setInputMessage(''); // Clear the input field after sending
+        setInputMessage('');
     };
     
 
@@ -102,7 +102,7 @@ function DashboardAi() {
         let data = new FormData();
         data.append('wavfile', blob, "recording.wav");
         const config = { headers: { 'content-type': 'multipart/form-data' } };
-        axios.post('https://med-scribe-backend.onrender.com/asr', data, config)
+        axios.post('http://localhost:8080/asr', data, config)
             .then(response => {
                 playAudio(response.data.mp3Url); 
                 setIsLoading(false);
@@ -140,7 +140,7 @@ function DashboardAi() {
                     {userData && (
                         <>
                             <img 
-                                src={userData.profileImage ? `https://med-scribe-backend.onrender.com${userData.profileImage}` : "./Images/Ellipse 232.png"} 
+                                src={userData.profileImage ? `http://localhost:8080${userData.profileImage}` : "./Images/Ellipse 232.png"} 
                                 alt="Profile" 
                                 className="profile-pic" 
                             />
@@ -187,9 +187,10 @@ function DashboardAi() {
                         <img src='./Images/Layer_1.png' alt="Audio Blob"/>
                     </div>
                 </div>
-                <div className='desktop-audioblob'>
-                    <img src='./Images/audioblob.png' alt="Audio Blob"/>
-                </div>
+               <div className='desktop-audioblob'>
+    <img src='./Images/audioblob.png' alt="Audio Blob" className="blob-animation"/>
+</div>
+
             </main>
         </div>
     );

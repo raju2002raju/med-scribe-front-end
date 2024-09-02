@@ -10,7 +10,7 @@ const UsersList = () => {
     // Function to fetch data from the API
     const fetchUsers = async () => {
       try {
-        const response = await fetch('https://med-scribe-backend.onrender.com/api/users-get-data'); // Replace with your backend URL
+        const response = await fetch('http://localhost:8080/api/users-get-data'); // Replace with your backend URL
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

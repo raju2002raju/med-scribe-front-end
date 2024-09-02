@@ -22,7 +22,7 @@ function Signup() {
         const file = e.target.files[0];
         setProfileImage(file);
         
-        // Create a preview of the selected image
+        
         const reader = new FileReader();
         reader.onloadend = () => {
             setPreviewImage(reader.result);
@@ -32,8 +32,28 @@ function Signup() {
         }
     };
 
+    const validateEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    const validatePhone = (phone) => {
+        const phoneRegex = /^\d{10}$/; 
+        return phoneRegex.test(phone);
+    };
+
     async function submit(e) {
         e.preventDefault();
+
+        if (!validateEmail(email)) {
+            alert("Please enter a valid email address.");
+            return;
+        }
+
+        if (!validatePhone(phone)) {
+            alert("Please enter a valid phone number.");
+            return;
+        }
 
         const formData = new FormData();
         formData.append("name", name);
@@ -46,7 +66,7 @@ function Signup() {
         }
 
         try {
-            const response = await axios.post("https://med-scribe-backend.onrender.com/auth/signup", formData, {
+            const response = await axios.post("http://localhost:8080/auth/signup", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -54,9 +74,21 @@ function Signup() {
 
             if (response.data.status === "exist") {
                 alert("User already exists");
-            } else if (response.data.status === "notexist") {
+            } else if (response.data.status === "success") {  
+                alert("Signup successful!");
+            
+                // Clear input fields
+                setName('');
+                setEmail('');
+                setPassword('');
+                setConfirmPassword('');
+                setPhone('');
+                setProfileImage(null);
+                setPreviewImage(null);
+            
                 navigate("/dashboard", { state: { id: email } });
             }
+            
         } catch (error) {
             alert("Error during signup");
             console.log(error);
@@ -64,69 +96,71 @@ function Signup() {
     }
 
     return (
-       <div>
-             <img src='./Images/Vector 3.png' style={{width:'100%'}} className='vector-img' alt="Background" />
-         <div className="loginSignup">
-            <div className="login">
-                <h1>Hello! Register to Get Started</h1>
-                <form onSubmit={submit} className="signup_form">
-                    <div>
-                    <div className="profile-img-div">
-                        <img 
-                            src={previewImage || "./Images/Ellipse 232.png"} 
-                            alt="Profile" 
-                            className='profile-image-signup' 
-                        />
-                    </div>
-                        <label htmlFor="profile-pic-upload" className='signup-image-uploader'>
-                            <input type="file" id="profile-pic-upload" accept="image/*" onChange={handleFileChange} hidden />
-                            <img src='../Images/iconamoon_edit-fill.png' alt="Edit" />
-                        </label>
-                    </div>
-                    <input type="text" onChange={(e) => setName(e.target.value)} placeholder="Enter Username" required />
-                    <input type="email" onChange={(e) => setEmail(e.target.value)} placeholder="Enter Email" required />
-                    <input type="tel" onChange={(e) => setPhone(e.target.value)} placeholder="Enter Phone Number" required />
-                    <div className="password-field">
-                        <input 
-                            type={showPassword ? "text" : "password"} 
-                            onChange={(e) => setPassword(e.target.value)} 
-                            placeholder="Enter Password" 
-                            required 
-                        />
-                        <button 
-                            type="button" 
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="show-password-btn"
-                        >
-                            <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
-                        </button>
-                    </div>
-                    <div className="password-field">
-                        <input 
-                            type={showPassword ? "text" : "password"} 
-                            onChange={(e) => setConfirmPassword(e.target.value)} 
-                            placeholder="Enter Confirm Password" 
-                            required 
-                        />
-                        <button 
-                            type="button" 
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="show-password-btn"
-                        >
-                            <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
-                        </button>
-                    </div>
-                    <div className='login-btn'>
-                        <button type="submit">Create New Account</button>
-                    </div>
-                </form>
-                <GoogleOAuthProvider clientId={clientId}>
-                    <LoginButton />
-                </GoogleOAuthProvider>
-                <p>Already have an account <Link style={{ textDecoration: 'none' }} to="/login">Login Here</Link></p>
+        <div>
+            <img src='./Images/Vector 3.png' style={{ width: '100%' }} className='vector-img' alt="Background" />
+            <div className="loginSignup">
+                <div className="login">
+                    <h1>Hello! Register to Get Started</h1>
+                    <form onSubmit={submit} className="signup_form">
+                        <div>
+                            <div className="profile-img-div">
+                                <img
+                                    src={previewImage || "./Images/Ellipse 232.png"}
+                                    alt="Profile"
+                                    className='profile-image-signup'
+                                />
+                            </div>
+                            <label htmlFor="profile-pic-upload" className='signup-image-uploader'>
+                                <input type="file" id="profile-pic-upload" accept="image/*" onChange={handleFileChange} hidden />
+                                <img src='../Images/iconamoon_edit-fill.png' alt="Edit" />
+                            </label>
+                        </div>
+                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter Username" required />
+                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter Email" required />
+                        <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Enter Phone Number" required />
+                        <div className="password-field">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Enter Password"
+                                required
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="show-password-btn"
+                            >
+                                <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
+                            </button>
+                        </div>
+                        <div className="password-field">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                placeholder="Enter Confirm Password"
+                                required
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="show-password-btn"
+                            >
+                                <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
+                            </button>
+                        </div>
+                        <div className='login-btn'>
+                            <button type="submit">Create New Account</button>
+                        </div>
+                    </form>
+                    <GoogleOAuthProvider clientId={clientId}>
+                        <LoginButton />
+                    </GoogleOAuthProvider>
+                    <p>Already have an account <Link style={{ textDecoration: 'none' }} to="/login">Login Here</Link></p>
+                </div>
             </div>
         </div>
-       </div>
     );
 }
 

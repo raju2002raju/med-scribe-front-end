@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import InterestedClientsOpportunities from './Component/InterestedClientsOpportunits';
 import OpportunityDetails from './Component/OpportunityDetails';
@@ -38,7 +38,7 @@ const App = () => {
         <Route path='/Artificial_intelligence' element={<TalkWithAssistant />} />
         <Route path='/reset_password' element={<ResetPassword />} />
         <Route path='/visited_clients' element={<Clients />} />
-        <Route path='/setting' element={<Setting />} />
+        <Route path='/setting' element={<Setting />} />  
         <Route path='/transcribe_ai' element={<TranscribeAi />} />
         <Route path='/saved_file' element={<SavedTranscribeText />} />
         <Route path='generate_image' element={<GenerateImage />} />

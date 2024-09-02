@@ -100,12 +100,6 @@ const InterestedClientsOpportunities = () => {
       );
   }, [opportunities, searchQuery]);
 
-  if (loadingOpportunities && loadingAppointments) {
-    return <div className='hourglass_container'>
-      <div className='hourglass'>Loading....</div>
-    </div>;
-  }
-
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -141,24 +135,30 @@ const InterestedClientsOpportunities = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredOpportunities.map((opportunity, index) => {
-                const matchingAppointment = appointments.find(app => app.contactId === opportunity.contact.id);
-                const appointmentTime = matchingAppointment
-                  ? `${new Date(matchingAppointment.startTime).toLocaleString()} - ${new Date(matchingAppointment.endTime).toLocaleTimeString()}`
-                  : 'No Appointment';
-                
-                return (
-                  <tr key={opportunity.id}>
-                    <td>{index + 1}</td>
-                    <td>
-                      <Link to={`/opportunity/${opportunity.id}`}>
-                        {opportunity.name}
-                      </Link>
-                    </td>
-                    <td>{appointmentTime}</td>
-                  </tr>
-                );
-              })}
+              {loadingOpportunities || loadingAppointments ? ( // Ensure loader is shown until both are fully loaded
+                <tr>
+                  <td colSpan="3" style={{ textAlign: 'center' }}>Loading...</td>
+                </tr>
+              ) : (
+                filteredOpportunities.map((opportunity, index) => {
+                  const matchingAppointment = appointments.find(app => app.contactId === opportunity.contact.id);
+                  const appointmentTime = matchingAppointment
+                    ? `${new Date(matchingAppointment.startTime).toLocaleString()} - ${new Date(matchingAppointment.endTime).toLocaleTimeString()}`
+                    : 'No Appointment';
+                  
+                  return (
+                    <tr key={opportunity.id}>
+                      <td>{index + 1}</td>
+                      <td>
+                        <Link to={`/opportunity/${opportunity.id}`}>
+                          {opportunity.name}
+                        </Link>
+                      </td>
+                      <td>{appointmentTime}</td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </table>
         </div>
