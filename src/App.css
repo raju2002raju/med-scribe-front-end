@@ -580,17 +580,16 @@ main {
 }
 
 .appointments-table {
-  width: 70%;
+  width: 50%;
   border-collapse: separate;
   border-spacing: 0 10px;
 }
 
 .appointments-table th {
-  text-align: left;
   padding: 10px;
   font-weight: normal;
   color: rgba(255, 255, 255, 0.7);
-  text-align: center;
+  text-align: justify;
 }
 
 .appointments-table tr {
@@ -601,8 +600,8 @@ main {
 .appointments-table td {
   padding: 10px 3px;
   font-size: 14px;
-  width: 0px;
-  text-align: center;
+  width: 0px; 
+  text-align: justify;
 }
 
 
@@ -704,6 +703,7 @@ span{
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  border: 2px solid ;
 }
 
 nav {
@@ -791,6 +791,7 @@ nav button.active {
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
+  border: 2px solid;
 }
 
 .edit-icon {
@@ -1307,13 +1308,9 @@ button{
 }
 
 
-
-
-
-
 .search-div-button button{
   padding: 10px;
-  width: 330px;
+  width: 335px;
   border: none;
   border-radius: 10px;
 }
@@ -1329,10 +1326,11 @@ button{
 }
 
 .profile-img-div img {
-  border: none;
+  border: 1px solid;
   border-radius: 50%;
   width: 200px;
   height: 200px;
+  padding: 20px;
 }
 
 .password-field {
@@ -1384,4 +1382,36 @@ a{
 }
 
 
+.user-info{
+  position: absolute;
+  background: #fff ;
+  padding: 20px;
+  color: #000;
+  text-align: center;
+  border-radius: 10px;
+  top: 100px;
+  right: 20px ;
+  z-index: 1;
+}
 
+
+.user-info button{
+  background:#ccc ;
+  padding: 8px 20px;
+  margin-top:10px ;
+  border-radius: 20px;  
+}
+
+.google-login{
+  display: flex;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.already-d-g{
+  display: flex;
+  gap: 20px;
+}

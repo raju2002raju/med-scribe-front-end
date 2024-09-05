@@ -120,9 +120,7 @@ const InterestedClientsOpportunities = () => {
               />
               <img className='search-icon-interested-clients' src='../Images/search.png' alt="Search" />
             </div>
-            <div className="user-profile">
-              <img src="../Images/Ellipse 232.png" alt="User" />
-            </div>
+           
           </div>
         </header>
         <div className="table-container">

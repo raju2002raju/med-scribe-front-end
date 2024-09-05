@@ -21,8 +21,7 @@ function Signup() {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         setProfileImage(file);
-        
-        
+
         const reader = new FileReader();
         reader.onloadend = () => {
             setPreviewImage(reader.result);
@@ -38,9 +37,18 @@ function Signup() {
     };
 
     const validatePhone = (phone) => {
-        const phoneRegex = /^\d{10}$/; 
+        const phoneRegex = /^\d{10}$/;
         return phoneRegex.test(phone);
     };
+
+    const validatePassword = (password) => {
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasNumber = /\d/.test(password);
+        const isValidLength = password.length >= 8;
+        return { hasUpperCase, hasNumber, isValidLength };
+    };
+
+    const passwordStrength = validatePassword(password);
 
     async function submit(e) {
         e.preventDefault();
@@ -71,13 +79,11 @@ function Signup() {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-
+            localStorage.setItem('userEmail', email);
             if (response.data.status === "exist") {
                 alert("User already exists");
-            } else if (response.data.status === "success") {  
+            } else if (response.data.status === "success") {
                 alert("Signup successful!");
-            
-                // Clear input fields
                 setName('');
                 setEmail('');
                 setPassword('');
@@ -85,10 +91,9 @@ function Signup() {
                 setPhone('');
                 setProfileImage(null);
                 setPreviewImage(null);
-            
                 navigate("/dashboard", { state: { id: email } });
             }
-            
+
         } catch (error) {
             alert("Error during signup");
             console.log(error);
@@ -101,20 +106,24 @@ function Signup() {
             <div className="loginSignup">
                 <div className="login">
                     <h1>Hello! Register to Get Started</h1>
-                    <form onSubmit={submit} className="signup_form">
-                        <div>
-                            <div className="profile-img-div">
+                    <form onSubmit={submit} className="signup_form" encType="multipart/form-data">
+                        <div className="profile-img-div">
+                            <label htmlFor="profile-pic-upload" className='signup-image-uploader'>
                                 <img
                                     src={previewImage || "./Images/Ellipse 232.png"}
                                     alt="Profile"
                                     className='profile-image-signup'
                                 />
-                            </div>
-                            <label htmlFor="profile-pic-upload" className='signup-image-uploader'>
-                                <input type="file" id="profile-pic-upload" accept="image/*" onChange={handleFileChange} hidden />
-                                <img src='../Images/iconamoon_edit-fill.png' alt="Edit" />
+                                <input
+                                    type="file"
+                                    id="profile-pic-upload"
+                                    accept="image/*"
+                                    onChange={handleFileChange}
+                                    style={{ display: 'none' }}
+                                />
                             </label>
                         </div>
+
                         <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter Username" required />
                         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter Email" required />
                         <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Enter Phone Number" required />
@@ -133,6 +142,11 @@ function Signup() {
                             >
                                 <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
                             </button>
+                        </div>
+                        <div className="password-requirements">
+                            <p style={{ color: passwordStrength.hasUpperCase ? 'green' : 'red' }}>At least one uppercase letter</p>
+                            <p style={{ color: passwordStrength.hasNumber ? 'green' : 'red' }}>At least one numerical digit (0-9)</p>
+                            <p style={{ color: passwordStrength.isValidLength ? 'green' : 'red' }}>Minimum 8 characters</p>
                         </div>
                         <div className="password-field">
                             <input
@@ -157,7 +171,7 @@ function Signup() {
                     <GoogleOAuthProvider clientId={clientId}>
                         <LoginButton />
                     </GoogleOAuthProvider>
-                    <p>Already have an account <Link style={{ textDecoration: 'none' }} to="/login">Login Here</Link></p>
+                    <p className="already-d-g">Already have an account <Link style={{ textDecoration: 'none' }} to="/login">Login Here</Link></p>
                 </div>
             </div>
         </div>

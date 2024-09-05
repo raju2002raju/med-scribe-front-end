@@ -11,25 +11,20 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false); 
 
   async function submit(e) {
     e.preventDefault();
     console.log('Submit function called'); 
 
  
-    console.log('Remember Me:', rememberMe); 
-    if (!rememberMe) {
-      alert("Please tick the 'Remember Me' checkbox to proceed.");
-      return;
-    }
+  
 
     try {
       const response = await axios.post("https://med-scribe-backend.onrender.com/auth/login", {  
           email,
           password
       });
-
+      localStorage.setItem('userEmail', email);
       console.log('Response from server:', response);
 
       if (response.status === 200) { 
@@ -90,12 +85,7 @@ const Login = () => {
             <div className='Forget_Remember'>
               <div className='check'>
                 <input 
-                  type='checkbox' 
-                  checked={rememberMe} 
-                  onChange={(e) => {
-                    console.log('Checkbox clicked:', e.target.checked); // Debugging log
-                    setRememberMe(e.target.checked); 
-                  }} 
+                  type='checkbox'  
                 />
                 <p style={{fontSize:'15px'}}>Remember Me</p>
               </div>
@@ -104,7 +94,7 @@ const Login = () => {
               </div>
             </div>
             <div className='login-btn'>
-              <button type="submit" disabled={!rememberMe}>Login</button>
+              <button type="submit">Login</button>
             </div>
             <div>
               <p>Don't have an account? <Link style={{textDecoration:'none'}} to='/signup'><span>Register Now</span></Link></p>

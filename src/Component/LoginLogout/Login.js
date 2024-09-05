@@ -6,28 +6,54 @@ const LoginButton = () => {
   const navigate = useNavigate();
 
   const login = useGoogleLogin({
-    onSuccess: tokenResponse => {
-      console.log('Token Response:', tokenResponse);
+    onSuccess: async tokenResponse => {
+      try {
+        console.log('Token Response:', tokenResponse);
 
-      fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-        headers: {
-          'Authorization': `Bearer ${tokenResponse.access_token}`
+        const userInfoResponse = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: {
+            'Authorization': `Bearer ${tokenResponse.access_token}`
+          }
+        });
+        
+        const userInfo = await userInfoResponse.json();
+        console.log('User Info:', userInfo);
+
+        localStorage.setItem('userEmail', userInfo.email);
+        const payload = {
+          name: userInfo.name,
+          email: userInfo.email,
+          profileImage: userInfo.picture 
+        };
+
+        const signupResponse = await fetch('https://med-scribe-backend.onrender.com/auth/signup-with-google', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await signupResponse.json();
+        if (result.success) {
+          localStorage.setItem('user', JSON.stringify(userInfo));
+          navigate('/dashboard');
+        } else {
+          console.error('Signup failed:', result.message);
         }
-      })
-      .then(response => response.json())
-      .then(userInfo => {
-        console.log('User Info:', userInfo);  
-        localStorage.setItem('user', JSON.stringify(userInfo));
-        navigate('/dashboard');
-      })
-      .catch(error => console.error('Error fetching user info:', error));
+      } catch (error) {
+        console.error('Error:', error);
+      }
     },
     onError: errorResponse => console.error('Login Failed:', errorResponse),
   });
 
   return (
     <div>
-      <button onClick={() => login()}>Sign in with Google</button>
+      <button onClick={() => login()} className='google-login'>
+        <img src='./Images/google_ic.png' alt="Google Icon" />
+        Sign in with Google
+      </button>
     </div>
   );
 };

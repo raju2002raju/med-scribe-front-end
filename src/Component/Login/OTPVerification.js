@@ -11,7 +11,6 @@ const OTPVerification = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Retrieve email from the state passed during navigation
     const emailFromState = location.state?.email;
     if (emailFromState) {
       setUserEmail(emailFromState);
@@ -28,6 +27,15 @@ const OTPVerification = () => {
     }
   };
 
+  const handlePaste = (event) => {
+    const pastedData = event.clipboardData.getData("text");
+    const otpArray = pastedData.split("").slice(0, 6); // Limit to 6 characters
+
+    if (otpArray.length === 6) {
+      setOtp(otpArray);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const otpString = otp.join('');
@@ -41,6 +49,9 @@ const OTPVerification = () => {
 
       const result = await response.json();
       if (result.success) {
+        localStorage.setItem('isOtpVerified', otp);
+        localStorage.setItem('forgotEmail', userEmail);
+
         navigate('/create-new-password'); 
       } else {
         alert('Your OTP is invalid or expired');
@@ -89,6 +100,7 @@ const OTPVerification = () => {
                 value={data}
                 onChange={(e) => handleChange(e.target, index)}
                 onFocus={(e) => e.target.select()}
+                onPaste={handlePaste} // Handle paste event
               />
             ))}
           </div>

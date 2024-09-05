@@ -12,12 +12,14 @@ const Setting = () => {
   const [profileEmail, setProfileEmail] = useState('');
   const [profilePhone, setProfilePhone] = useState('');
   const [profileImage, setProfileImage] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [showUserInfo, setShowUserInfo] = useState(false);
 
   // State for passwords
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [userEmail, setUserEmail] = useState('');
+
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -55,6 +57,25 @@ const Setting = () => {
         alert('Failed to update prompt. Please try again.');
       });
   };
+
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+          const email = localStorage.getItem('userEmail');
+          const response = await axios.get('https://med-scribe-backend.onrender.com/auth/user', { 
+              headers: {
+                  'user-email': email 
+              }
+           });
+          setUserData(response.data[0]);  
+      } catch (error) {
+          console.error("Error fetching user data:", error);
+      }
+  };
+
+    fetchUserData();
+}, []);
 
   const handleUpdateKey = () => {
     localStorage.setItem('ghlApiKey', ghlApiKey);
@@ -94,9 +115,11 @@ const Setting = () => {
     }
   
     try {
+      const email = localStorage.getItem('userEmail');
       const response = await axios.post('https://med-scribe-backend.onrender.com/profile/update', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'user-email': email 
         },
       });
   
@@ -123,15 +146,17 @@ const Setting = () => {
     }
   
     const payload = {
-      email: userEmail,
       oldPassword,
       newPassword,
     };
+
+    const email = localStorage.getItem('userEmail');
   
     fetch('https://med-scribe-backend.onrender.com/api/reset-password-setting', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'user-email': email 
       },
       body: JSON.stringify(payload),
     })
@@ -147,6 +172,21 @@ const Setting = () => {
       });
   };
   
+  const handleLogout = async () => {
+    try {         
+        await axios.post('https://med-scribe-backend.onrender.com/auth/logout'); 
+
+        localStorage.removeItem('userEmail'); 
+        window.location.href = '/login'; 
+    } catch (error) {
+        console.error('Error during logout:', error);
+   
+    }
+};
+
+const toggleUserInfo = () => {
+  setShowUserInfo(!showUserInfo);
+};
 
   return (
     <div className='opportunity-details'>
@@ -157,7 +197,29 @@ const Setting = () => {
             <div style={{ display: 'flex' }}>
               <h1>SETTINGS</h1>
             </div>
-            <img src="../Images/Ellipse 232.png" alt="Profile" className="profile-pic" />
+           <div>
+           {userData && (
+                        <>
+                            <img
+                                src={userData.profileImage || '../Images/Ellipse 232.png'} 
+                                className="profile-pic"
+                            />
+                            {showUserInfo && (
+                                <div className="user-info">
+                                    <p>{userData.name}</p>
+                                    <p>{userData.email}</p>
+                                    <button onClick={handleLogout}>Log Out</button>
+                                </div>
+                            )}
+                        </>
+                    )}
+                    <img 
+                        src={showUserInfo ? "./Images/arrowUp.png" : "./Images/arrowDown.png"} 
+                        style={{ width: '30px', cursor: 'pointer' }} 
+                        alt="Arrow" 
+                        onClick={toggleUserInfo} 
+                    />
+           </div>
           </header>
           <nav>
             <button className={activeTab === 'Profile' ? 'active' : ''} onClick={() => setActiveTab('Profile')}>Profile</button>
@@ -168,12 +230,13 @@ const Setting = () => {
             <div>
               <div className='profile'>
                 <div className='profile-image-container'>
-                  <img src={profileImage ? URL.createObjectURL(profileImage) : "./Images/Ellipse 232.png"} alt="Profile" className='profile-image' />
+                  <img src={profileImage ? URL.createObjectURL(profileImage) : (userData?.profileImage || '../Images/Ellipse 232.png')} alt="Profile" className='profile-image' />
                   <label htmlFor="profile-pic-upload" className='edit-icon'>
                     <input type="file" id="profile-pic-upload" accept="image/*" onChange={handleImageChange} hidden />
                     <img src='../Images/iconamoon_edit-fill.png' alt="Edit" />
                   </label>
                 </div>
+                
                 <div className='profile-info'>
                   <input
                     className='input_w_500'
@@ -206,13 +269,6 @@ const Setting = () => {
           {activeTab === 'Reset Password' && (
             <div className='reset-pass'>
               <div className='reset-password-input'>
-              <input
-                  className='input_w_500'
-                  type='email'
-                  placeholder='email'
-                  value={userEmail}
-                  onChange={(e) => setUserEmail(e.target.value)}
-                />
                 <input
                   className='input_w_500'
                   type='password'
