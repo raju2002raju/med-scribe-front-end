@@ -109,7 +109,6 @@ function InterestedClient({ contactId, onClose}) {
             <button onClick={startRecording} type="button" className="action-button">Start</button>
             <button onClick={() => {
                 stopRecording();
-                window.location.reload(true);
             }} type="button" className="action-button">Stop</button>
             </div>
             {isRecording && <SoundWave /> }
