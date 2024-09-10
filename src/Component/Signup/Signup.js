@@ -171,7 +171,7 @@ function Signup() {
                     <GoogleOAuthProvider clientId={clientId}>
                         <LoginButton />
                     </GoogleOAuthProvider>
-                    <p className="already-d-g">Already have an account <Link style={{ textDecoration: 'none' }} to="/login">Login Here</Link></p>
+                    <p className="already-d-g">Already have an account?<Link style={{ textDecoration: 'none', color:'rebeccapurple' }} to="/login">Login Here</Link></p>
                 </div>
             </div>
         </div>

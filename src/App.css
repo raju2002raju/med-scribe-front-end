@@ -122,23 +122,58 @@ hr{
     width: 100%;
   }
 
+  .a-w-170{
+    width: 170px;
+    height: 35px;
+  }
  
+  .d-flex {
+    width: 90%;
+    background: #ffffff70;
+    margin: 20px;
+    padding: 15px;
+    border-radius: 20px;
+    border: none;
+}
 
+.d-flex-justify{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.client-btn-div{
+  display: flex;
+  justify-content: space-around;
+}
+
+.search-container{
+  width: 100%;
+}
  
+.google-login{
+  display: flex;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid;
+    padding: 10px;
+    border-radius: 5px;
+    justify-content: center;
+    width: 100%;
+}
+
 
 }
 
 @media (max-width: 768px) {
-  /* Main container for onboarding */
   .onboarding-main-container {
     padding: 20px;
     text-align: center;
-    background-color: white; /* Background color for the content */
-    border-radius: 15px; /* Rounded corners to match the design */
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    background-color: white; 
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
   }
 
-  /* Onboarding container styling */
   .onboarding_container {
     display: flex;
     flex-direction: column;
@@ -149,15 +184,15 @@ hr{
   /* Top vector image */
   .onboarding-main-container img:first-child {
     width: 60%;
-    border-top-left-radius: 15px; /* To match the rounded corners */
+    border-top-left-radius: 15px; 
     border-top-right-radius: 15px;
   }
 
-  /* Girl icon styling */
+
   .onboarding_container img {
-    width: 100px; /* Adjust the size of the icon */
+    width: 100px;
     margin-bottom: 20px;
-    border-radius: 50%; /* Circle the image */
+    border-radius: 50%; 
   }
 
   /* Text and button container */
@@ -401,6 +436,8 @@ nav ul li img {
   color: #8D41EE;
 }
 
+
+
 .settings {
   margin-top: auto;
   display: flex;
@@ -417,7 +454,7 @@ main {
   display: flex;
   justify-content: end;
   padding: 20px;
-  gap: 40px;
+  gap: 10px;
 }
 
 .search-bar input {
@@ -498,13 +535,11 @@ main {
 }
 
 
-
-
 /* Interested Clients CSS  */
 
 .interested-clients-dashboard{
   display: flex;
-  min-height: 100vh;
+  min-height: 110vh;
   height: 100%;
   gap: 50px;
   background: linear-gradient(135deg, #3736DF, #8D41EE, #D641EE);
@@ -534,12 +569,6 @@ main {
   overflow-y: auto;
 }
 
-/* .header-interested-clients {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-} */
 
 .header-right {
   display: flex;
@@ -589,7 +618,7 @@ main {
   padding: 10px;
   font-weight: normal;
   color: rgba(255, 255, 255, 0.7);
-  text-align: justify;
+  text-align: center;
 }
 
 .appointments-table tr {
@@ -601,7 +630,7 @@ main {
   padding: 10px 3px;
   font-size: 14px;
   width: 0px; 
-  text-align: justify;
+  text-align: center;
 }
 
 
@@ -660,8 +689,9 @@ main {
 
 header {
   display: flex;
-  align-items: center;
   margin: 20px;
+  gap: 20px;
+  align-items: flex-start;
 }
 
 .back-button {
@@ -676,19 +706,8 @@ header {
   font-size: 43px;
 }
 
-/* h1 {
-  margin-left: 20px;
-  flex-grow: 1;
-} */
-/* 
-span{
-  color: #8D41EE;
-} */
 
-.search-container {
-  margin-right: 20px;
-  width: 100%;
-}
+
 
 .search-container input {
   padding: 10px;
@@ -718,15 +737,17 @@ nav button {
   padding: 10px 10px;
   cursor: pointer;
   opacity: 0.7;
-  font-size: 10px;
+  font-size: 15px;
 }
 
 nav button.active {
   background-color: #ffffff9b;
   border-radius: 10px;
   opacity: 1;
-  
+  width: 100px;
+  height: auto;
 }
+
 
 
 
@@ -1133,8 +1154,10 @@ button{
   justify-content: center;
 }
 
-.search-div-button {
-  margin-top: 0px;
+
+.a-w-170{
+  width: 170px;
+  height: 35px;
 }
 
 }
@@ -1211,6 +1234,29 @@ button{
 
   .search-div-button{
     margin-top: 50px;
+  }
+
+  .d-flex{
+    width: 50%;
+    background: #ffffff70;
+    margin: 20px;
+    padding: 15px;
+    border-radius: 20px;
+    border: none;
+  }
+
+  .search-container {
+    margin-right: 20px;
+    width: 45%;
+  }
+
+  .google-login{
+    display: flex;
+      align-items: center;
+      gap: 20px;
+      border: 1px solid;
+      padding: 10px;
+      border-radius: 5px;
   }
 
 }
@@ -1365,12 +1411,17 @@ button{
   color: #8D41EE;
 }
 
-ul li a, 
+ul li a,
 a{
   text-decoration: none;
   display: flex;
   align-items: center;
+  color: #fff;
 }
+
+
+
+
 
 .chat-messages{
   overflow-wrap: anywhere;
@@ -1402,16 +1453,89 @@ a{
   border-radius: 20px;  
 }
 
-.google-login{
-  display: flex;
-    align-items: center;
-    gap: 20px;
-    border: 1px solid;
-    padding: 10px;
-    border-radius: 5px;
-}
+
 
 .already-d-g{
   display: flex;
+  gap: 10px;
+}
+
+
+
+.d-flex img{
+  width: 10px;
+  height: 10px;
+}
+
+.d-flex a{
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background: #7A37D1;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 600px;
+}
+
+.w-300{
+  width: 335px;
+  padding: 7px;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.cross-btn{
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  font-weight: 700;
+}
+
+.d-flex-j-s{
+  display: flex;
+  justify-content: space-between;
+}
+
+.recording_button_div{
+  display: flex;
   gap: 20px;
+}
+
+.d-flex-justify{
+  margin-top: 50px;
+}
+
+.nav-container ul li.active a {
+  color: #8D41EE;
+  font-weight: bold; 
+}
+
+.client-btn{
+  margin: 10px;
+    padding: 7px;
+    border-radius: 15px;
+    width: 100px;
+    cursor: pointer;
+}
+
+.appointments-table td a{
+ display: flex;
+ justify-content: center;
 }

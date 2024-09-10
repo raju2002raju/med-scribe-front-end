@@ -21,6 +21,11 @@ import OTPVerification from './Component/Login/OTPVerification';
 import CreateNewPassword from './Component/Login/CreateNewPassword ';
 import PasswordChanged from './Component/Login/PasswordChanged';
 import UsersList from './Component/UsersList';
+import Pipline from './Component/Pipline';
+import ProfileUpdate from './Component/settingUpdate/profileupdate';
+import UpdatePassword from './Component/settingUpdate/UpdatePassword';
+import UpdatePromptKeys from './Component/settingUpdate/UpdatePromptKeys';
+
 
 const App = () => {
 
@@ -47,6 +52,10 @@ const App = () => {
         <Route path="/create-new-password" element={<CreateNewPassword />} /> 
         <Route path='/password-changed-successfully' element={<PasswordChanged/>} />
         <Route path='/user-list' element={<UsersList/>} />
+        <Route path='/update-pipline' element={<Pipline/>} />
+        <Route path='/setting/profile' element={<ProfileUpdate/>} />
+        <Route path='/setting/update-password' element={<UpdatePassword/>} />
+        <Route path='/setting/update-keys-prompt' element={<UpdatePromptKeys />} />
       </Routes>
     </BrowserRouter>
   );

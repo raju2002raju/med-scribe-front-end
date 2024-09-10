@@ -91,6 +91,7 @@ function FetchNote({ ContactIdClients }) {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
+  if (!data.length) return <div>No data available</div>;
 
   return (
   <div>
@@ -137,7 +138,7 @@ function FetchNote({ ContactIdClients }) {
        <span>{new Date(note.createdAt).toLocaleString()}</span>
      </div>
      <div className="data-row">
-       <span>DELETE TO GHL</span>
+       <span>DELETE FROM GHL</span>
        <button className="action-button" onClick={() => handleDeleteRow(note.id)}>Delete</button>
      </div>
      

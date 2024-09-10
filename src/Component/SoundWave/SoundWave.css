@@ -1,7 +1,7 @@
 
   
   .sound-wave {
-    height: 50px;
+    height: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -12,7 +12,7 @@
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
     animation-direction: alternate;
-    background: #000;
+    background: #fff;
     margin: 0 1.5px;
     height: 10px;
     width: 1px;

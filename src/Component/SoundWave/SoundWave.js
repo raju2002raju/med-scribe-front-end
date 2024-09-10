@@ -11,7 +11,7 @@ const SoundWave = () => {
 
   return (
     <div className="sound-wave">
-      {Array.from({ length: 160 }, (_, i) => (
+      {Array.from({ length: 80 }, (_, i) => (
         <div key={i} className="bar"></div>
       ))}
     </div>

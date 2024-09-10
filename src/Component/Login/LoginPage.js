@@ -90,14 +90,14 @@ const Login = () => {
                 <p style={{fontSize:'15px'}}>Remember Me</p>
               </div>
               <div>
-                <Link className='resetPassword' to='/reset_password'>Forgot Password?</Link>
+                <Link className='resetPassword' to='/reset_password' style={{color:'red'}}>Forgot Password?</Link>
               </div>
             </div>
             <div className='login-btn'>
               <button type="submit">Login</button>
             </div>
             <div>
-              <p>Don't have an account? <Link style={{textDecoration:'none'}} to='/signup'><span>Register Now</span></Link></p>
+              <p>Don't have an account? <Link style={{textDecoration:'none', display:'inline', color:'rebeccapurple'}} to='/signup'><span>Register Now</span></Link></p>
             </div>
           </form>
         </div>

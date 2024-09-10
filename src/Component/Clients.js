@@ -1,23 +1,6 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar1 from './Navbar1';
-
-// Utility function to debounce search input
-const useDebounce = (value, delay) => {
-  const [debouncedValue, setDebouncedValue] = useState(value);
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [value, delay]);
-
-  return debouncedValue;
-};
 
 const Clients = () => {
   const [opportunities, setOpportunities] = useState([]);
@@ -27,90 +10,66 @@ const Clients = () => {
   const [pageSize] = useState(20);
   const [hasMore, setHasMore] = useState(true); // To control pagination
   const [searchTerm, setSearchTerm] = useState('');
-  const uniqueIds = useMemo(() => new Set(), []);
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
-  // Fetching opportunities with pagination
-  const fetchOpportunities = useCallback(async () => {
-    if (!hasMore) return; // Stop fetching if no more data to load
+  const selectedStage = localStorage.getItem('stageId');
+  const selectedPipeline = localStorage.getItem('selectedPipeline');
 
-    setLoading(true); // Show loading indicator
+  const fetchAllStageData = async () => {
+    if (selectedPipeline && selectedStage) {
+      setLoading(true);
+      setError(null);
+      const ghlApiKey = localStorage.getItem('ghlApiKey');
+      let allData = [];
+      let page = 1;
+      let hasMore = true;
 
-    const ghlApiKey = localStorage.getItem('ghlApiKey');
-    const url = `https://rest.gohighlevel.com/v1/pipelines/pJEZwEtP2TMvtnNw8FUm/opportunities?page=${page}&pageSize=${pageSize}`;
+      while (hasMore) {
+        try {
+          const url = `https://rest.gohighlevel.com/v1/pipelines/${selectedPipeline}/opportunities?limit=100&page=${page}`;
+          const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${ghlApiKey}`,
+              'Content-Type': 'application/json'
+            }
+          });
 
-    try {
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${ghlApiKey}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.status} - ${response.statusText}`);
-      }
-
-      const data = await response.json();
-
-      if (Array.isArray(data.opportunities)) {
-        const newOpportunities = data.opportunities.filter((item) => {
-          if (uniqueIds.has(item.id)) {
-            return false;
-          } else {
-            uniqueIds.add(item.id);
-            return true;
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
           }
-        });
 
-        setOpportunities((prevOpportunities) => [...prevOpportunities, ...newOpportunities]);
+          const data = await response.json();
+          allData = [...allData, ...data.opportunities];
 
-        // Check if more data is available
-        if (data.opportunities.length < pageSize) {
-          setHasMore(false); // No more data to load
-        } else {
-          setPage((prevPage) => prevPage + 1); // Increment the page for the next fetch
+          if (data.opportunities.length < 100) {
+            hasMore = false;
+          } else {
+            page++;
+          }
+        } catch (error) {
+          console.error('Error fetching stage data:', error);
+          setError(error.message);
+          hasMore = false;
         }
-      } else {
-        throw new Error('Data format is incorrect or Opportunities array is missing');
       }
-    } catch (error) {
-      console.error('Fetch error:', error);
-      setError(error.message);
-    } finally {
-      setLoading(false); // Hide loading indicator
+
+      setOpportunities(allData);
+      setLoading(false);
     }
-  }, [page, pageSize, hasMore, uniqueIds]);
+  };
 
   useEffect(() => {
-    fetchOpportunities(); // Fetch data on component mount
-  }, [fetchOpportunities]);
+    fetchAllStageData();
+  }, []);
 
-  // Filtered results with memoization to avoid unnecessary computations
-  const filteredVisitedClients = useMemo(() => {
-    return opportunities.filter(
-      (item) =>
-        item.contact.tags[0] === 'ready_to_visit' &&
-        item.contact.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+  const filteredOpportunities = useMemo(() => {
+    return opportunities.filter((item) =>
+      item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  }, [opportunities, debouncedSearchTerm]);
+  }, [opportunities, searchTerm]);
 
-  // Load more data when the user scrolls to the bottom
-  const handleScroll = useCallback(() => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 && !loading) {
-      fetchOpportunities(); // Fetch next set of data
-    }
-  }, [fetchOpportunities, loading]);
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className='opportunity-details'>
@@ -118,7 +77,7 @@ const Clients = () => {
         <Navbar1 />
         <div style={{ width: '100%' }}>
           <header className='header-interested-clients'>
-            <h1>VISITED CLIENTS</h1>
+            <h1>All Clients Data</h1>
             <div className='search-container'>
               <input
                 type='text'
@@ -137,22 +96,26 @@ const Clients = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredVisitedClients.map((item, index) => (
-                <tr key={item.id} className='table-row'>
-                  <td>{index + 1}</td>
+              {filteredOpportunities.slice((page - 1) * pageSize, page * pageSize).map((item, index) => (
+                <tr key={item.id}>
+                  <td>{(page - 1) * pageSize + index + 1}</td>
                   <td>
-                    <Link to={`/item/${item.id}`}>{item.contact.name}</Link>
+                    <Link to={`/opportunity/${item.id}`}>{item.name}</Link>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
 
-          {/* Show loading indicator at the bottom while fetching more data */}
-          {loading && (
-            <div className='hourglass_container'>
-              <div className='hourglass'>Loading...</div>
-            </div>
+          {filteredOpportunities.length > page * pageSize && (
+           <div className='client-btn-div'>
+           <button className='client-btn' onClick={() => setPage((prevPage) => prevPage - 1)}>
+          preview
+        </button>
+        <button className='client-btn' onClick={() => setPage((prevPage) => prevPage + 1)}>
+          Next
+        </button>
+         </div>
           )}
         </div>
       </div>

@@ -83,10 +83,6 @@ const OpportunityDetails = () => {
           </div>
         <div className='mobile-back-button' onClick={handleBackClick}><img src='../Images/back-1.png' /></div>
         <h1>{opportunity.name}</h1>
-        {/* <div className="search-container">
-          <input type="text" placeholder="Search" />
-        </div> */}
-        {/* <img src="../Images/Ellipse 232.png" alt="Profile" className="profile-pic" /> */}
       </header>
       <nav>
         <button 

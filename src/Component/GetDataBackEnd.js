@@ -8,10 +8,12 @@ function GetDataBackEnd({ ContactIdClients, ContactId }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const baseUrl = 'https://med-scribe-backend.onrender.com';
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const apiUrl = 'https://med-scribe-backend.onrender.com/asr/transcriptions';
+                const apiUrl = `${baseUrl}/asr/transcriptions`;
                 const options = {
                     method: 'GET',
                     headers: {
@@ -48,7 +50,7 @@ function GetDataBackEnd({ ContactIdClients, ContactId }) {
         setData(newData);
 
         try {
-            const response = await fetch(`https://med-scribe-backend.onrender.com/api/deleteRow/${id}`, {
+            const response = await fetch(`${baseUrl}/api/deleteRow/${id}`, {
                 method: 'DELETE',
             });
 
@@ -63,13 +65,11 @@ function GetDataBackEnd({ ContactIdClients, ContactId }) {
         }
     };
 
-
     const sendToGoHighLevel = (item) => {
         const goHighLevelApiUrl = `https://rest.gohighlevel.com/v1/contacts/${ContactIdClients}/notes/`;
 
         const body = {
             body: `Transcript: ${item.transcript}\n ${item.recordingUrl}`
-
         };
 
         console.log(body.body);
@@ -79,7 +79,7 @@ function GetDataBackEnd({ ContactIdClients, ContactId }) {
             body: JSON.stringify(body),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2NhdGlvbl9pZCI6IlVubEJYYTlrSHIxRjI3VWxZT0tqIiwidmVyc2lvbiI6MSwiaWF0IjoxNzE2NTM4NjYxNjIyLCJzdWIiOiJZdG5JS1p2Yjh5dkNqemZaWlM1OSJ9.QatOP_sYaK8FHJbWlwgrYqeiKFt6x6Pr6IC_1nlBDek' // Replace with actual access token
+                'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Replace with actual access token
             },
         };
 
@@ -124,6 +124,7 @@ function GetDataBackEnd({ ContactIdClients, ContactId }) {
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
+    if (!data.length) return <div>No data available</div>; // Display this message if no data is available
 
     return (
         <div className="general-data">
@@ -135,28 +136,27 @@ function GetDataBackEnd({ ContactIdClients, ContactId }) {
                     </div>
                     <div className="data-row">
                         <span>TRANSCRIPT FILE</span>
-                        <button class="action-button" onClick={() => downloadTranscript(item.transcript)}>Download Transcript</button>
+                        <button className="action-button" onClick={() => downloadTranscript(item.transcript)}>Download Transcript</button>
                     </div>
                     <div className="data-row">
                         <span>AUDIO PLAY</span>
                         <span>
-                            <audio controls>
-                                <source src={`https://med-scribe-backend.onrender.com/files/${item.filePath}`} type="audio/wav" />
+                            <audio controls className='a-w-170'>
+                                <source src={`${baseUrl}/files/${item.filePath}`} type="audio/wav" />
                                 Your browser does not support the audio element.
                             </audio>
                         </span>
                     </div>
                     <div className="data-row">
                         <span>DELETE</span>
-                        <span> <button class="action-button" onClick={() => handleDeleteRow(item.id)}>Delete</button></span>
+                        <span> <button className="action-button" onClick={() => handleDeleteRow(item.id)}>Delete</button></span>
                     </div>
                     <div className="data-row">
                         <span>SEND TO GHL</span>
-                        <span><button class="action-button" onClick={() => sendToGoHighLevel(item)}>Send to GHL</button></span>
+                        <span><button className="action-button" onClick={() => sendToGoHighLevel(item)}>Send to GHL</button></span>
                     </div>
-
                 </div>
-            ))}
+            ))} 
         </div>
     );
 }

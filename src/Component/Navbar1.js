@@ -47,7 +47,7 @@ const DesktopNavbar = ({ activePath, handleActive }) => {
                     <img src="../Images/Mic.png" alt="Med Scribe" />
                     <span>MED SCRIBE</span>
                 </div>
-                <nav>
+                <nav className='nav-container'>
                     <ul>
                         <li className={activePath === '/dashboard' ? 'active' : ''}>
                             <Link to="/dashboard" onClick={() => handleActive('/dashboard')}>
@@ -70,7 +70,7 @@ const DesktopNavbar = ({ activePath, handleActive }) => {
                                 <img 
                                     src={activePath === '/visited_clients' ? '../Images/fa-solid_users (1).png' : '../Images/fa-solid_users.png'} 
                                     alt="Visited Clients" 
-                                /> Visited Clients
+                                /> All Clients
                             </Link>
                         </li>
                     </ul>

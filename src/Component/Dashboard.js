@@ -11,9 +11,9 @@ function Dashboard() {
   useEffect(() => {
     const ghlApiKey = localStorage.getItem('ghlApiKey');
 
-    if (!ghlApiKey) {
+    if (!ghlApiKey) {   
       alert('Please provide GHL Key to proceed.');
-      navigate('/setting'); 
+      navigate('/setting/update-keys-prompt'); 
       return;
     }
 

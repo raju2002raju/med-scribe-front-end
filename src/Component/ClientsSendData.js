@@ -8,19 +8,42 @@ const ClientsSendData = () => {
   const [clientIds, setClientIds] = useState({ interestedClients: [], readyToVisitClients: [] });
   const [dataSent, setDataSent] = useState(false);
   const pageSize = 20;
+  const userEmail = localStorage.getItem('userEmail');
+  const [ghlApiKey, setGhlApiKey] = useState('');
+
+  // Fetch GHL API Key
+  useEffect(() => {
+    const fetchGhlApiKey = async () => {
+      try {
+        const response = await fetch(`https://med-scribe-backend.onrender.com/config/get-ghl-api-key?email=${userEmail}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch GHL API key');
+        }
+        const result = await response.json();
+        setGhlApiKey(result.ghlApiKey);
+      } catch (error) {
+        console.error('Error fetching GHL API key:', error);
+        setError('Error fetching GHL API key');
+        setLoading(false);
+      }
+    };
+
+    fetchGhlApiKey();
+  }, [userEmail]);
 
   useEffect(() => {
+    if (!ghlApiKey) return; 
+
     const fetchOpportunities = async (page = 1) => {
-      const ghlApiKey = localStorage.getItem('ghlApiKey');
       const url = `https://rest.gohighlevel.com/v1/pipelines/pJEZwEtP2TMvtnNw8FUm/opportunities?page=${page}&pageSize=${pageSize}`;
 
       try {
         const response = await fetch(url, {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${ghlApiKey}`,
-            'Content-Type': 'application/json'
-          }
+            Authorization: `Bearer ${ghlApiKey}`,
+            'Content-Type': 'application/json',
+          },
         });
 
         if (!response.ok) {
@@ -33,7 +56,7 @@ const ClientsSendData = () => {
           const interestedClients = [];
           const readyToVisitClients = [];
 
-          data.opportunities.forEach(opportunity => {
+          data.opportunities.forEach((opportunity) => {
             if (opportunity.contact.tags.includes('interested_client')) {
               interestedClients.push(opportunity.contact.id);
             }
@@ -42,10 +65,10 @@ const ClientsSendData = () => {
             }
           });
 
-          setOpportunities(prevOpportunities => [...prevOpportunities, ...data.opportunities]);
-          setClientIds(prevClientIds => ({
+          setOpportunities((prevOpportunities) => [...prevOpportunities, ...data.opportunities]);
+          setClientIds((prevClientIds) => ({
             interestedClients: [...prevClientIds.interestedClients, ...interestedClients],
-            readyToVisitClients: [...prevClientIds.readyToVisitClients, ...readyToVisitClients]
+            readyToVisitClients: [...prevClientIds.readyToVisitClients, ...readyToVisitClients],
           }));
 
           if (data.opportunities.length === pageSize) {
@@ -64,25 +87,22 @@ const ClientsSendData = () => {
     };
 
     fetchOpportunities();
-  }, []);
+  }, [ghlApiKey]);
 
+  // Fetch Notes
   useEffect(() => {
     const fetchAllNotes = async () => {
-      const ghlApiKey = localStorage.getItem('ghlApiKey');
-      const allClientIds = [
-        ...clientIds.interestedClients,
-        ...clientIds.readyToVisitClients
-      ];
+      const allClientIds = [...clientIds.interestedClients, ...clientIds.readyToVisitClients];
 
-      const notesPromises = allClientIds.map(async clientId => {
+      const notesPromises = allClientIds.map(async (clientId) => {
         try {
           const apiUrl = `https://rest.gohighlevel.com/v1/contacts/${clientId}/notes/`;
           const options = {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${ghlApiKey}`
-            }
+              Authorization: `Bearer ${ghlApiKey}`,
+            },
           };
 
           const response = await fetch(apiUrl, options);
@@ -91,9 +111,9 @@ const ClientsSendData = () => {
           }
 
           const result = await response.json();
-          return result.notes.map(note => ({
+          return result.notes.map((note) => ({
             clientId: clientId,
-            text: note.body.split('\n')[0]
+            text: note.body.split('\n')[0],
           }));
         } catch (error) {
           console.error(`Error fetching notes for client ID ${clientId}:`, error);
@@ -109,7 +129,7 @@ const ClientsSendData = () => {
         sendDataToBackend(allNotes);
       } catch (error) {
         console.error('Error fetching notes:', error);
-        setError(error);
+        setError(error.message);
       } finally {
         setLoading(false);
       }
@@ -118,30 +138,31 @@ const ClientsSendData = () => {
     if (!loading && !dataSent && clientIds.interestedClients.length > 0 && clientIds.readyToVisitClients.length > 0) {
       fetchAllNotes();
     }
-  }, [clientIds, loading, dataSent]);
+  }, [clientIds, loading, dataSent, ghlApiKey]);
 
+  // Send Data to Backend
   const sendDataToBackend = async (allNotes) => {
     try {
-      const filteredOpportunities = opportunities.filter(opportunity =>
+      const filteredOpportunities = opportunities.filter((opportunity) =>
         opportunity.contact.tags.includes('interested_client')
       );
 
       const filteredVisitedClients = opportunities
-        .filter(client => client.contact.tags.includes('ready_to_visit'))
-        .map(client => ({
+        .filter((client) => client.contact.tags.includes('ready_to_visit'))
+        .map((client) => ({
           name: client.contact.name,
           email: client.contact.email,
           phoneNumber: client.contact.phone,
-          transcriptions: allNotes.filter(note => note.clientId === client.contact.id).map(note => note.text)
+          transcriptions: allNotes.filter((note) => note.clientId === client.contact.id).map((note) => note.text),
         }));
 
       const dataToSend = {
-        opportunities: filteredOpportunities.map(opportunity => ({
+        opportunities: filteredOpportunities.map((opportunity) => ({
           name: opportunity.contact.name,
           email: opportunity.contact.email,
           phoneNumber: opportunity.contact.phone,
           contactId: opportunity.contact.id,
-          transcriptions: allNotes.filter(note => note.clientId === opportunity.contact.id).map(note => note.text)
+          transcriptions: allNotes.filter((note) => note.clientId === opportunity.contact.id).map((note) => note.text),
         })),
         visitedClients: filteredVisitedClients,
       };
@@ -149,9 +170,9 @@ const ClientsSendData = () => {
       const response = await fetch('https://med-scribe-backend.onrender.com/clientData/clientData', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(dataToSend)
+        body: JSON.stringify(dataToSend),
       });
 
       if (!response.ok) {
@@ -162,22 +183,10 @@ const ClientsSendData = () => {
       setDataSent(true);
     } catch (error) {
       console.error('Error sending data to backend:', error);
+      setError(error.message);
     }
   };
 
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
-
-  // if (error) {
-  //   return <div>Error: {error.message}</div>;
-  // }
-
-  // return (
-  //   <div>
-  //     <p>Data fetched and sent to the backend successfully.</p>
-  //   </div>
-  // );
 };
 
 export default ClientsSendData;

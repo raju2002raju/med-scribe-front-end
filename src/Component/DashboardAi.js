@@ -67,7 +67,7 @@ function DashboardAi() {
             // Handle error case
             setChatMessages((prevMessages) => [
                 ...prevMessages,
-                { text: 'Error: Unable to send message', isUser: false },
+                { text: 'Error: Your api key is not correct please provide me proper api key', isUser: false },
             ]);
         }
 
@@ -120,11 +120,24 @@ function DashboardAi() {
     };
 
     const playAudio = (mp3Url) => {
+        if (!mp3Url) {
+            console.error('Audio URL is empty or undefined.');
+            return;
+        }
+    
         let audio = new Audio(mp3Url);
-        audio.play().catch((error) => {
-            console.error('Error playing audio:', error);
-        });
+    
+        audio.oncanplaythrough = () => {
+            audio.play().catch((error) => {
+                console.error('Error playing audio:', error);
+            });
+        };
+    
+        audio.onerror = (error) => {
+            console.error('Error loading audio:', error.message, 'URL:', mp3Url);
+        };
     };
+    
 
     const handleRecordingToggle = () => {
         if (isRecording) {
