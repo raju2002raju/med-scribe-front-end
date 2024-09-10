@@ -162,6 +162,10 @@ hr{
     width: 100%;
 }
 
+.all-clients-div{
+  height: 220vh;
+}
+
 
 }
 
@@ -355,6 +359,7 @@ hr{
   width: 300px;
 }
 
+
 .img-w-280{
   width: 280px;
 }
@@ -464,6 +469,10 @@ main {
   width: 300px;
   border-radius: 10px;
   border: none;
+}
+
+.search-bar input::placeholder{
+  color: #fff;
 }
 
 
@@ -716,6 +725,10 @@ header {
   background-color: #ffffffa5;
   color: white;
   width: 100%;
+}
+
+.search-container input::placeholder{
+  color: #fff;
 }
 
 .profile-pic {
@@ -1419,10 +1432,6 @@ a{
   color: #fff;
 }
 
-
-
-
-
 .chat-messages{
   overflow-wrap: anywhere;
 }
@@ -1431,7 +1440,6 @@ a{
   display: flex;
   justify-content: center;
 }
-
 
 .user-info{
   position: absolute;

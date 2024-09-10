@@ -17,8 +17,6 @@ const Login = () => {
     console.log('Submit function called'); 
 
  
-  
-
     try {
       const response = await axios.post("https://med-scribe-backend.onrender.com/auth/login", {  
           email,
@@ -34,11 +32,11 @@ const Login = () => {
         } else if (response.data.status === "notexist") {
           alert("User not found or incorrect password");
         }
-      } else {
+      } else{
         alert("Password incorrect. Please try again.");
       }
     } catch (error) {
-      alert("Failed to login. Please try again.");
+      alert("User not found or incorrect password");
       console.error('Error during login:', error);
     }
   }

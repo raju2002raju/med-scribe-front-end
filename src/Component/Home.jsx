@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Onboarding from './Onboarding';
 import Onboarding2 from './Onboarding2';
 
 const Home = () => {

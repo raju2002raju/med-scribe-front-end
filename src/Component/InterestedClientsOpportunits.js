@@ -10,21 +10,41 @@ const InterestedClientsOpportunities = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [showOpportunities, setShowOpportunities] = useState(false); 
+  const [showOpportunities, setShowOpportunities] = useState(false);
   const itemsPerPage = 100;
 
   const selectedStage = localStorage.getItem('stageId');
   const selectedPipeline = localStorage.getItem('selectedPipeline');
-  
+  const [ghlApiKey, setGhlApiKey] = useState('');
+
+  const userEmail = localStorage.getItem('userEmail');
+
   useEffect(() => {
-    fetchAllStageData();
-  }, []);
+    // Fetch API key if userEmail is present
+    if (userEmail) {
+      fetch(`https://med-scribe-backend.onrender.com/config/get-ghl-api-key?email=${encodeURIComponent(userEmail)}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.ghlApiKey) {
+            setGhlApiKey(data.ghlApiKey);
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching GHL API key:', error);
+        });
+    }
+  }, [userEmail]);
+
+  useEffect(() => {
+    if (ghlApiKey) {
+      fetchAllStageData();
+    }
+  }, [ghlApiKey]);
 
   const fetchAllStageData = async () => {
     if (selectedPipeline && selectedStage) {
       setLoading(true);
       setError(null);
-      const ghlApiKey = localStorage.getItem('ghlApiKey');
       let allData = [];
       let page = 1;
       let hasMore = true;
@@ -54,7 +74,7 @@ const InterestedClientsOpportunities = () => {
           }
         } catch (error) {
           console.error('Error fetching stage data:', error);
-          setError(error.message);
+          setError('Failed to fetch data. Please try again later.');
           hasMore = false;
         }
       }
@@ -64,7 +84,7 @@ const InterestedClientsOpportunities = () => {
       setFilteredData(filtered);
       setTotalPages(Math.ceil(filtered.length / itemsPerPage));
       setCurrentPage(1);
-      setShowOpportunities(true); 
+      setShowOpportunities(true);
       setLoading(false);
     }
   };
@@ -91,7 +111,7 @@ const InterestedClientsOpportunities = () => {
             <div className="search-bar">
               <input 
                 type="text" 
-                placeholder="Search Here" 
+                placeholder="Search Here...." 
                 value={searchQuery} 
                 onChange={handleSearch} 
               />
@@ -124,7 +144,7 @@ const InterestedClientsOpportunities = () => {
         </div>
       </div>
     </div>
-  );  
+  );
 };
 
 export default InterestedClientsOpportunities;
