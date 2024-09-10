@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 function Signup() {
-    const clientId = '223098918914-7rl4egn7ggo14994bkga1r42qarf20jv.apps.googleusercontent.com';
+    const clientId = '799149964193-3m34unf2976di4du1omj7g02v27g1164.apps.googleusercontent.com';
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
