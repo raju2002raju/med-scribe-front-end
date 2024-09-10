@@ -6,16 +6,33 @@ function Dashboard() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [ghlApiKey, setGhlApiKey] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const ghlApiKey = localStorage.getItem('ghlApiKey');
+  const userEmail = localStorage.getItem('userEmail');
 
-    if (!ghlApiKey) {   
-      alert('Please provide GHL Key to proceed.');
-      navigate('/setting/update-keys-prompt'); 
-      return;
+  useEffect(() => {
+    if (userEmail) {
+      fetch(`https://med-scribe-backend.onrender.com/config/get-ghl-api-key?email=${encodeURIComponent(userEmail)}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.ghlApiKey) {
+            setGhlApiKey(data.ghlApiKey);
+          } else {
+            alert('Please provide GHL Key to proceed.');
+            navigate('/setting/update-keys-prompt');
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching GHL API key:', error);
+        });
+    } else {
+      navigate('/login'); 
     }
+  }, [userEmail, navigate]);
+
+  useEffect(() => {
+    if (!userEmail || !ghlApiKey) return;
 
     const currentDate = new Date();
     const endDate = new Date();
@@ -57,7 +74,7 @@ function Dashboard() {
         setError(error);
         setLoading(false);
       });
-  }, [navigate]);
+  }, [userEmail, ghlApiKey]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;

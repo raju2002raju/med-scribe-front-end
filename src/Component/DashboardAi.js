@@ -16,11 +16,13 @@ function DashboardAi() {
     const [userData, setUserData] = useState(null);
     const [showUserInfo, setShowUserInfo] = useState(false);
 
+    const baseUrl = 'https://med-scribe-backend.onrender.com'; 
+
     useEffect(() => {
         const fetchUserData = async () => {
             try {
                 const email = localStorage.getItem('userEmail');
-                const response = await axios.get('https://med-scribe-backend.onrender.com/auth/user', { 
+                const response = await axios.get(`${baseUrl}/auth/user`, { 
                     headers: {
                         'user-email': email 
                     }
@@ -51,7 +53,7 @@ function DashboardAi() {
 
         try {
             const response = await axios.post(
-                'https://med-scribe-backend.onrender.com/auth/chat-process',
+                `${baseUrl}/auth/chat-process`,
                 formData,
                 {
                     headers: { 'Content-Type': 'multipart/form-data' },
@@ -109,7 +111,7 @@ function DashboardAi() {
         data.append('wavfile', blob, 'recording.wav');
         const config = { headers: { 'content-type': 'multipart/form-data' } };
         axios
-            .post('https://med-scribe-backend.onrender.com/asr', data, config)
+            .post(`${baseUrl}/asr`, data, config)
             .then((response) => {
                 playAudio(response.data.mp3Url);
                 setIsLoading(false);
@@ -163,7 +165,7 @@ function DashboardAi() {
 
     const handleLogout = async () => {
         try {         
-            await axios.post('https://med-scribe-backend.onrender.com/auth/logout'); 
+            await axios.post(`${baseUrl}/auth/logout`); 
     
             localStorage.removeItem('userEmail'); 
             window.location.href = '/login'; 
