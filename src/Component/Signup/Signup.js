@@ -97,7 +97,7 @@ function Signup() {
             }
 
         } catch (error) {
-            alert("Error during signup");
+             alert("Password do not match");
             console.log(error);
         }
     }
