@@ -1480,9 +1480,11 @@ a{
 }
 
 .already-d-g a:hover{
-  padding: 5px;
-  background: #ccc;
+ background: #ccc;
   border-radius: 20px;
+  width: 150px;
+  display: flex;
+  justify-content: center;
 }
 
 
