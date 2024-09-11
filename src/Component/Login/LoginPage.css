@@ -5,7 +5,6 @@
 
 .loginSignup{
     width: 100%;
-    padding-top:50px ;
     display: flex;
     justify-content: center;
 }
@@ -22,9 +21,9 @@
 }
 
 .login h1{
-    font-size: 40px;
+    font-size: 25px;
     font-weight: 800;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-align: center;
 }
 
@@ -181,7 +180,7 @@
 .already-div{
     display: flex;
     justify-content: center;
-    margin: 50px
+    margin: 30px
 }
 
 
