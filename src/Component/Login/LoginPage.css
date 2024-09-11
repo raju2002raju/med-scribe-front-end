@@ -73,14 +73,13 @@
 
 
 .signup_form input {
-    width: 100%;
-    margin-bottom: 30px;
-    padding: 10px;
-    font-size: 15px;
+       border: 1px solid #e8ecf4;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 500;
     outline: none;
-    font-weight: 700;
-    border-radius:10px ;
-    border: 1px solid #E8ECF4;
+    padding: 10px;
+    width: 100%;
 }
 
 .signup{
