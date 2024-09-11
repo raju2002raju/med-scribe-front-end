@@ -1387,7 +1387,7 @@ button{
 .profile-img-div{
   display: flex;
   justify-content: center;
-  margin-bottom: 20px ;
+  margin-bottom: 10px ;
 }
 
 .profile-image-signup{
@@ -1397,9 +1397,9 @@ button{
 .profile-img-div img {
   border: 1px solid;
   border-radius: 50%;
-  width: 150px;
-  height: 150px;
-  padding: 20px;
+  width: 70px;
+  height: 70px;
+  padding: 10px;
 }
 
 .password-field {
