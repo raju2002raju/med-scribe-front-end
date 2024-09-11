@@ -8,9 +8,9 @@ const Pipeline = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [ghlApiKey, setGhlApiKey] = useState(''); 
+  const [showPopup, setShowPopup] = useState(false);
   const userEmail = localStorage.getItem('userEmail'); 
 
-  
   useEffect(() => {
     const fetchGhlApiKey = async () => {
       try {
@@ -76,7 +76,8 @@ const Pipeline = () => {
   const handleUpdateClick = () => {
     localStorage.setItem('stageId', selectedStage);
     localStorage.setItem('selectedPipeline', selectedPipeline?.id || '');
-    alert('Thanks for the update');
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 1000); 
   };
 
   if (loading) return <div>Loading...</div>;
@@ -84,6 +85,12 @@ const Pipeline = () => {
 
   return (
     <div className='d-flex-justify'>
+      {showPopup && (
+        <div className='popup'>
+          Update Successful! Selected Pipeline: {selectedPipeline?.name}, Stage: {selectedStage && selectedPipeline?.stages.find(stage => stage.id === selectedStage)?.name}
+        </div>
+      )}
+
       <h2>Select a Pipeline</h2>
       <select 
         onChange={handlePipelineChange} 

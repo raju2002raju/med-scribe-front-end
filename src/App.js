@@ -24,7 +24,6 @@ import UpdatePromptKeys from './Component/settingUpdate/UpdatePromptKeys';
 
 
 const App = () => {
-
   return (
     <BrowserRouter>
      <CheckAppoinment />

@@ -55,6 +55,11 @@ function Dashboard() {
       .then(response => {
         if (!response.ok) {
           return response.json().then(errData => {
+            if (response.status === 401) {
+              alert('Your API key is invalid? Please update correct API key')
+              navigate('/setting/update-keys-prompt');
+              throw new Error('Invalid API Key. Redirecting to update keys...');
+            }
             throw new Error(`Network response was not ok: ${response.statusText} - ${JSON.stringify(errData)}`);
           });
         }
@@ -74,18 +79,21 @@ function Dashboard() {
         setError(error);
         setLoading(false);
       });
-  }, [userEmail, ghlApiKey]);
+  }, [userEmail, ghlApiKey, navigate]);
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-
+  
   return (
     <div className='dashboard-m-container'>
-      <div>
+      {error ? (
+        <div className="error-message" style={{ color: 'red', marginTop: '20px' }}>
+          Error: {error.message}
+        </div>
+      ) : (
         <div>
           <DashboardAi />
         </div>
-      </div>
+      )}
     </div>
   );
 }

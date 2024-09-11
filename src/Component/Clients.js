@@ -19,7 +19,6 @@ const Clients = () => {
   const userEmail = localStorage.getItem('userEmail');
 
   useEffect(() => {
-    // Fetch API key if userEmail is present
     const fetchApiKey = async () => {
       try {
         const response = await fetch(
@@ -40,7 +39,6 @@ const Clients = () => {
   }, [userEmail]);
 
   useEffect(() => {
-    // Fetch opportunities when the API key or other dependencies change
     const fetchAllStageData = async () => {
       if (selectedPipeline && selectedStage && ghlApiKey) {
         setLoading(true);
@@ -90,7 +88,6 @@ const Clients = () => {
   }, [selectedPipeline, selectedStage, ghlApiKey]);
 
   useEffect(() => {
-    // Update opportunities based on pagination
     setIsFetching(true);
     const startIndex = (page - 1) * pageSize;
     const endIndex = startIndex + pageSize;
@@ -103,9 +100,6 @@ const Clients = () => {
       item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [opportunities, searchTerm]);
-
-  if (loading && !isFetching) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className='opportunity-details'>
@@ -124,41 +118,57 @@ const Clients = () => {
             </div>
           </header>
 
-          <table className='appointments-table'>
-            <thead>
-              <tr className='table-row'>
-                <th>Index</th>
-                <th>Name</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredOpportunities.map((item, index) => (
-                <tr key={item.id}>
-                  <td>{(page - 1) * pageSize + index + 1}</td>
-                  <td>
-                    <Link to={`/item/${item.id}`}>{item.name}</Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {/* Display loading or error messages within the design layout */}
+          {loading && (
+            <div className='loading-container'>
+              <p>Loading...</p>
+            </div>
+          )}
+          {error && (
+            <div className='error-container'>
+              <p>Error: {error}</p>
+            </div>
+          )}
 
-          <div className='client-btn-div'>
-            <button
-              className='client-btn'
-              onClick={() => setPage((prevPage) => Math.max(prevPage - 1, 1))}
-              disabled={page === 1}
-            >
-              Previous
-            </button>
-            <button
-              className='client-btn'
-              onClick={() => setPage((prevPage) => prevPage + 1)}
-              disabled={!hasMore}
-            >
-              Next
-            </button>
-          </div>
+          {!loading && !error && (
+            <>
+              <table className='appointments-table'>
+                <thead>
+                  <tr className='table-row'>
+                    <th>Index</th>
+                    <th>Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredOpportunities.map((item, index) => (
+                    <tr key={item.id}>
+                      <td>{(page - 1) * pageSize + index + 1}</td>
+                      <td>
+                        <Link to={`/item/${item.id}`}>{item.name}</Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              <div className='client-btn-div'>
+                <button
+                  className='client-btn'
+                  onClick={() => setPage((prevPage) => Math.max(prevPage - 1, 1))}
+                  disabled={page === 1}
+                >
+                  Previous
+                </button>
+                <button
+                  className='client-btn'
+                  onClick={() => setPage((prevPage) => prevPage + 1)}
+                  disabled={!hasMore}
+                >
+                  Next
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

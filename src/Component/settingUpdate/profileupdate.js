@@ -3,14 +3,12 @@ import axios from 'axios';
 import Navbar1 from '../Navbar1';
 import { useNavigate } from 'react-router-dom';
 
-
-
 const ProfileUpdate = () => {
   const [profileName, setProfileName] = useState('');
   const [profileEmail, setProfileEmail] = useState('');
   const [profilePhone, setProfilePhone] = useState('');
   const [profileImage, setProfileImage] = useState(null);
-  const [userData, setUserData] = useState({}); // State for user data
+  const [userData, setUserData] = useState({});
   const navigate = useNavigate();
 
   const handleImageChange = (event) => {
@@ -27,11 +25,11 @@ const ProfileUpdate = () => {
             'user-email': email,
           },
         });
-        setUserData(response.data[0]); // Set the user data from response
-        setProfileName(response.data[0].name); // Populate initial data
+        setUserData(response.data[0]);
+        setProfileName(response.data[0].name);
         setProfileEmail(response.data[0].email);
         setProfilePhone(response.data[0].phone);
-        setProfileImage(response.data[0].profileImage); // Use profile image URL
+        setProfileImage(response.data[0].profileImage);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -48,7 +46,7 @@ const ProfileUpdate = () => {
     if (profileImage instanceof File) {
       formData.append('profileImage', profileImage);
     }
-
+  
     try {
       const email = localStorage.getItem('userEmail');
       const response = await axios.post('https://med-scribe-backend.onrender.com/profile/update', formData, {
@@ -57,11 +55,12 @@ const ProfileUpdate = () => {
           'user-email': email,
         },
       });
-
+  
       if (response.status === 200) {
         const updatedImageUrl = response.data.profileImageUrl;
-        setProfileImage(updatedImageUrl); // Update profile image URL
+        setProfileImage(updatedImageUrl); 
         alert('Profile updated successfully!');
+        window.location.href = '/setting/profile'; 
       } else {
         console.error('Failed to update profile:', response.statusText);
         alert('Failed to update profile. Please try again.');
@@ -71,6 +70,7 @@ const ProfileUpdate = () => {
       alert('Error updating profile. Please try again.');
     }
   };
+  
 
   const handleBackClick = () => {
     navigate('/setting')
@@ -78,9 +78,9 @@ const ProfileUpdate = () => {
 
   const getProfileImageSrc = () => {
     if (profileImage instanceof File) {
-      return URL.createObjectURL(profileImage);
+      return URL.createObjectURL(profileImage); // Preview of the new image file
     }
-    return profileImage || '../Images/Ellipse 232.png';
+    return profileImage || '../Images/Ellipse 232.png'; // Existing or default image
   };
 
   return (

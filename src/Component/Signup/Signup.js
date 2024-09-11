@@ -5,9 +5,11 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import LoginButton from "../LoginLogout/Login";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import FacebookLoginComponent from "../LoginLogout/FacebookLogin";
 
 function Signup() {
     const clientId = '799149964193-3m34unf2976di4du1omj7g02v27g1164.apps.googleusercontent.com';
+    
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -104,6 +106,7 @@ function Signup() {
         <div>
             <img src='./Images/Vector 3.png' style={{ width: '100%' }} className='vector-img' alt="Background" />
             <div className="loginSignup">
+                <div>
                 <div className="login">
                     <h1>Hello! Register to Get Started</h1>
                     <form onSubmit={submit} className="signup_form" encType="multipart/form-data">
@@ -123,11 +126,21 @@ function Signup() {
                                 />
                             </label>
                         </div>
-
+                        <div className='email_container input-icons'>
+                        <img src='./Images/profile_icon.png' className="icon" style={{ width: '20px' }} alt="Password Icon" />
                         <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter Username" required />
+
+                        </div>
+                        <div className='email_container input-icons'>
+                        <img src='/Images/email.png' className="icon" style={{ width: '20px' }} alt="Email Icon" />
                         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter Email" required />
+                        </div>
+                        <div className='email_container input-icons'>
+                        <img src='/Images/phone_icon.png' className="icon" style={{ width: '20px' }} alt="Email Icon" />
                         <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Enter Phone Number" required />
-                        <div className="password-field">
+                        </div>
+                        <div className="password-field password_container input-icons email_container">
+                        <img src='./Images/password.png' className="icon" style={{ width: '20px' }} alt="Password Icon" />
                             <input
                                 type={showPassword ? "text" : "password"}
                                 value={password}
@@ -143,12 +156,17 @@ function Signup() {
                                 <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
                             </button>
                         </div>
-                        <div className="password-requirements">
+                        
+                        {password && (
+                          <div className="password-requirements">
                             <p style={{ color: passwordStrength.hasUpperCase ? 'green' : 'red' }}>At least one uppercase letter</p>
                             <p style={{ color: passwordStrength.hasNumber ? 'green' : 'red' }}>At least one numerical digit (0-9)</p>
                             <p style={{ color: passwordStrength.isValidLength ? 'green' : 'red' }}>Minimum 8 characters</p>
-                        </div>
-                        <div className="password-field">
+                          </div>
+                        )}
+
+                        <div className="password-field password_container input-icons email_container">
+                        <img src='./Images/password.png' className="icon" style={{ width: '20px' }} alt="Password Icon" />
                             <input
                                 type={showPassword ? "text" : "password"}
                                 value={confirmPassword}
@@ -168,10 +186,16 @@ function Signup() {
                             <button type="submit">Create New Account</button>
                         </div>
                     </form>
-                    <GoogleOAuthProvider clientId={clientId}>
+                 <div className="g-f-signup-button">
+                 <GoogleOAuthProvider clientId={clientId}>
                         <LoginButton />
                     </GoogleOAuthProvider>
-                    <p className="already-d-g">Already have an account?<Link style={{ textDecoration: 'none', color:'rebeccapurple' }} to="/login">Login Here</Link></p>
+                    <FacebookLoginComponent/>
+                 </div>
+                </div>
+                   <div className="already-div">
+                   <p className="already-d-g">Already have an account?<Link style={{ textDecoration: 'none', color:'rebeccapurple' }} to="/login">Login Here</Link></p>
+                   </div>
                 </div>
             </div>
         </div>

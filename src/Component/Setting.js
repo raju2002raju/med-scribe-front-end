@@ -74,7 +74,7 @@ const Setting = () => {
                 </>
               )}
               <img
-                src={showUserInfo ? './Images/arrowUp.png' : './Images/arrowDown.png'}
+                src={showUserInfo ? './Images/arrowup.png' : './Images/arrowDown.png'}
                 style={{ width: '30px', cursor: 'pointer' }}
                 alt='Arrow'
                 onClick={toggleUserInfo}

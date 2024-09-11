@@ -20,7 +20,6 @@ const InterestedClientsOpportunities = () => {
   const userEmail = localStorage.getItem('userEmail');
 
   useEffect(() => {
-    // Fetch API key if userEmail is present
     if (userEmail) {
       fetch(`https://med-scribe-backend.onrender.com/config/get-ghl-api-key?email=${encodeURIComponent(userEmail)}`)
         .then((response) => response.json())
@@ -97,10 +96,6 @@ const InterestedClientsOpportunities = () => {
     ? filteredData.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
     : filteredData;
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!showOpportunities || filteredResults.length === 0) return <div>No data available</div>;
-
   return (
     <div className='interested-clients-dashboard'>
       <Navbar1 />
@@ -118,30 +113,40 @@ const InterestedClientsOpportunities = () => {
             </div>
           </div>
         </header>
-        <div className="table-container">
-          <table className="appointments-table">
-            <thead>
-              <tr className='heading-tr'>
-                <th>Sr No.</th>
-                <th>Name</th>
-                <th>Appointment Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredResults.map((item, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>
-                    <Link to={`/opportunity/${item.id}`}>
-                      {item.name}
-                    </Link>
-                  </td>
-                  <td>{item.appointmentTime || 'No Appointments'}</td>
+
+        {/* Show Loading or Error Messages within the design */}
+        {loading ? (
+          <div className="loading-message">Loading...</div>
+        ) : error ? (
+          <div className="error-message">Error: {error}</div>
+        ) : !showOpportunities || filteredResults.length === 0 ? (
+          <div className="no-data-message">No data available</div>
+        ) : (
+          <div className="table-container">
+            <table className="appointments-table">
+              <thead>
+                <tr className='heading-tr'>
+                  <th>Sr No.</th>
+                  <th>Name</th>
+                  <th>Appointment Time</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {filteredResults.map((item, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>
+                      <Link to={`/opportunity/${item.id}`}>
+                        {item.name}
+                      </Link>
+                    </td>
+                    <td>{item.appointmentTime || 'No Appointments'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );

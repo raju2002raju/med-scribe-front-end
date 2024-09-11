@@ -2,7 +2,7 @@ import React from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 
-const LoginButton = () => {
+const LoginButtonGoogle = () => {
   const navigate = useNavigate();
 
   const login = useGoogleLogin({
@@ -26,7 +26,7 @@ const LoginButton = () => {
           profileImage: userInfo.picture 
         };
 
-        const signupResponse = await fetch('https://med-scribe-backend.onrender.com/auth/signup-with-google', {
+        const signupResponse = await fetch('https://med-scribe-backend.onrender.com/auth/login-with-google', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -58,4 +58,4 @@ const LoginButton = () => {
   );
 };
 
-export default LoginButton;
+export default LoginButtonGoogle;
